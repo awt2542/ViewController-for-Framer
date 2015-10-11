@@ -25,14 +25,12 @@ class exports.ViewController extends Layer
 		if options.initialView?
 			@switchInstant options.initialView
 
-	add: (view, point = {x:0, y:0}, viaInternalChangeEvent = false) ->
+	add: (view, viaInternalChangeEvent = false) ->
 		if viaInternalChangeEvent
 			@switchInstant view
 		else
 			view.superLayer = @
 		view.on Events.Click, -> return # prevent click-through/bubbling
-		view.originalPoint = point
-		view.point = point
 		view.sendToBack()
 		
 	saveCurrentToHistory: (incomingAnimation,outgoingAnimation) ->
@@ -93,8 +91,6 @@ class exports.ViewController extends Layer
 			@current = newView
 			@current.bringToFront()
 
-	getPoint: (view, point) -> view.originalPoint || {x:0,y:0}
-
 	### ANIMATIONS ###
 
 	switchInstant: (newView) -> @fadeIn newView, time: 0
@@ -107,7 +103,7 @@ class exports.ViewController extends Layer
 			start:
 				x: -@width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions
 
 	slideInRight: (newView, animationOptions = @animationOptions) -> 
@@ -115,7 +111,7 @@ class exports.ViewController extends Layer
 			start:
 				x: @width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions
 
 	slideInDown: (newView, animationOptions = @animationOptions) -> 
@@ -124,7 +120,7 @@ class exports.ViewController extends Layer
 				y: -@height
 				x: 0
 			end:
-				y: @getPoint(newView).y
+				y: 0
 		@applyAnimation newView, incoming, animationOptions
 
 	slideInUp: (newView, animationOptions = @animationOptions) ->
@@ -133,14 +129,14 @@ class exports.ViewController extends Layer
 				y: @height
 				x: 0
 			end:
-				y: @getPoint(newView).y
+				y: 0
 		@applyAnimation newView, incoming, animationOptions
 
 	fadeIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
 			start:
-				x: @getPoint(newView).x
-				y: @getPoint(newView).y
+				x: 0
+				y: 0
 				opacity: 0
 			end:
 				opacity: 1
@@ -201,7 +197,7 @@ class exports.ViewController extends Layer
 				brightness: 100
 				x: @width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	pushInLeft: (newView, animationOptions = @animationOptions) ->
@@ -214,7 +210,7 @@ class exports.ViewController extends Layer
 			start:
 				x: -@width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	moveIn: (newView, animationOptions = @animationOptions) -> 
@@ -229,7 +225,7 @@ class exports.ViewController extends Layer
 			start:
 				x: @width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	moveInLeft: (newView, animationOptions = @animationOptions) ->
@@ -241,7 +237,7 @@ class exports.ViewController extends Layer
 			start:
 				x: -@width
 			end:
-				x: @getPoint(newView).x
+				x: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	moveInUp: (newView, animationOptions = @animationOptions) ->
@@ -254,7 +250,7 @@ class exports.ViewController extends Layer
 				x: 0
 				y: @height
 			end:
-				y: @getPoint(newView).y
+				y: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	moveInDown: (newView, animationOptions = @animationOptions) ->
@@ -267,7 +263,7 @@ class exports.ViewController extends Layer
 				x: 0
 				y: -@height
 			end:
-				y: @getPoint(newView).y
+				y: 0
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	magicMove: (newView, animationOptions = @animationOptions) ->
@@ -287,8 +283,8 @@ class exports.ViewController extends Layer
 			exisitingLayers[sub.name] = sub
 		
 		# proper switch with history support
-		newView.x = @getPoint(newView).x
-		newView.y = @getPoint(newView).y
+		newView.x = 0
+		newView.y = 0
 		@add newView if @subLayers.indexOf(newView) is -1
 		@saveCurrentToHistory 'magicMove'
 		@current = newView
