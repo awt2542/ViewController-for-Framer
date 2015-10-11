@@ -46,7 +46,7 @@ class exports.ViewController extends Layer
 		if previous.view?
 
 			if previous.incomingAnimation is 'magicMove'
-				return @magicMove previous.view
+				@magicMove previous.view
 			else
 				backIn = previous.outgoingAnimation.reverse()
 				moveOut = previous.incomingAnimation.reverse()
@@ -69,11 +69,9 @@ class exports.ViewController extends Layer
 
 			# reset common properties in case they
 			# were changed during last animation
-			#@current.z = 0
-			newView.visible = true
-			newView.brightness = 100
-			newView.opacity = 1
-			newView.scale = 1
+			newView.animateStop()
+			@current?.propsBeforeAnimation = @current.props
+			newView.props = newView.propsBeforeAnimation
 
 			@add newView if @subLayers.indexOf(newView) is -1
 
@@ -156,11 +154,10 @@ class exports.ViewController extends Layer
 				opacity: 1
 		@applyAnimation newView, incoming, animationOptions
 
-	crossDissolve: (newView, animationOptions = @animationOptions) ->
+	crossDissolve: (newView, animationOptions = @animationOptions) -> 
 		@fadeIn newView, animationOptions
 
 	fadeInBlack: (newView, animationOptions = @animationOptions) ->
-		midAnimationTime = 
 		outgoing =
 			start:
 				brightness: 100
@@ -169,7 +166,7 @@ class exports.ViewController extends Layer
 			delay: 0
 		incoming =
 			start:
-				brightness: 0
+		  	brightness: 0
 				opacity: 0
 				x: @getPoint(newView).x
 				y: @getPoint(newView).y

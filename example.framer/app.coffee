@@ -3,7 +3,6 @@
 Views = new ViewController
 	width: 500
 	height: 500
-	#clip: false
 Views.center()
 
 view1 = new Layer 
@@ -13,7 +12,7 @@ Utils.labelLayer view1, 'view1'
 
 view2 = new Layer
 	width: Views.width, height: Views.height
-	image: "http://bit.ly/1UvvNCp", superLayer: Views
+	image: "http://bit.ly/1UvvNCp", superLayer: Views, name: 'view2'
 Utils.labelLayer view2, 'view2'
 
 # Add views to the view controller
@@ -21,7 +20,7 @@ Utils.labelLayer view2, 'view2'
 # Switch view to set the initial state
 #Views.switchInstant view1
 # Set up transition on click
-view1.on Events.Click, -> Views.flipInRight view2
+view1.on Events.Click, -> Views.zoomedIn view2
 
 # Go back in history and reverse the previous animation
 view2.on Events.Click, -> Views.pushIn view1
@@ -38,16 +37,13 @@ view2.on Events.Click, -> Views.pushIn view1
 .slideInLeft
 .fadeIn
 .fadeInBlack
-.crossFade
+.crossDissolve
 .zoomIn
 .zoomedIn
-.flipInRight
-.flipInLeft
-.flipInUp
 .spinIn
 .moveInDown
 .moveInUp
 .moveInRight
 .moveInLeft
-.modal
+.magicMove
 ###
