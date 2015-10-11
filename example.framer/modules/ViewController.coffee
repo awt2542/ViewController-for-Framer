@@ -156,25 +156,6 @@ class exports.ViewController extends Layer
 
 	crossDissolve: (newView, animationOptions = @animationOptions) -> 
 		@fadeIn newView, animationOptions
-
-	fadeInBlack: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start:
-				brightness: 100
-			end:
-				brightness: 0
-			delay: 0
-		incoming =
-			start:
-		  	brightness: 0
-				opacity: 0
-				x: @getPoint(newView).x
-				y: @getPoint(newView).y
-			end:
-				brightness: 100
-				opacity: 1
-			delay: animationOptions.time/1.5
-		@applyAnimation newView, incoming, animationOptions, outgoing
 			
 	zoomIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
