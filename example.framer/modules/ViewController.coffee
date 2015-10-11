@@ -202,46 +202,6 @@ class exports.ViewController extends Layer
 				scale: 1
 				opacity: 1
 		@applyAnimation newView, incoming, animationOptions
-
-	flipIn: (newView, animationOptions = @animationOptions) -> 
-		@flipInRight newView, animationOptions
-
-	flipInRight: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				x: @width/2
-				z: @width
-				rotationY: 100
-			end:
-				x: @getPoint(newView).x
-				rotationY: 0
-				z: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	flipInLeft: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				x: -@width/2
-				z: @width
-				rotationY: -100
-			end:
-				x: @getPoint(newView).x
-				rotationY: 0
-				z: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	flipInUp: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				x: 0
-				z: @height
-				y: @height
-				rotationX: -100
-			end:
-				y: @getPoint(newView).y
-				rotationX: 0
-				z: 0
-		@applyAnimation newView, incoming, animationOptions
 		
 	spinIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
@@ -338,19 +298,6 @@ class exports.ViewController extends Layer
 				y: -@height
 			end:
 				y: @getPoint(newView).y
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	modal: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: {}
-			end:
-				scale: 0.9
-		incoming =
-			start:
-				x: 0
-				y: @height
-			end:
-				y: if newView.originalPoint? then newView.originalPoint.y else @height/10
 		@applyAnimation newView, incoming, animationOptions, outgoing
 
 	magicMove: (newView, animationOptions = @animationOptions) ->
