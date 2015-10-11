@@ -51,18 +51,12 @@ class exports.ViewController extends Layer
 				backIn = previous.outgoingAnimation.reverse()
 				moveOut = previous.incomingAnimation.reverse()
 
-				# Switch which animation that should carry the delay, if any
-				moveOutDelay = moveOut.options.delay
-				moveOut.options.delay = backIn.options.delay
-				backIn.options.delay = moveOutDelay
-
 				backIn.start()
 				moveOut.start()
 
 				@current = previous.view
 				@history.shift()
-				moveOut.on Events.AnimationEnd, =>
-					@current.bringToFront()
+				moveOut.on Events.AnimationEnd, => @current.bringToFront()
 
 	applyAnimation: (newView, incoming, animationOptions, outgoing = {}) ->
 		unless newView is @current
@@ -80,7 +74,6 @@ class exports.ViewController extends Layer
 			outgoingAnimationObject =
 				layer: @current
 				properties: {}
-			outgoingAnimationObject.delay = outgoing.delay
 			_.extend outgoingAnimationObject.properties, outgoing.end
 			_.extend outgoingAnimationObject, animationOptions
 			outgoingAnimation = new Animation(outgoingAnimationObject)
@@ -91,7 +84,6 @@ class exports.ViewController extends Layer
 			incomingAnimationObject = 
 				layer: newView
 				properties: {}
-			incomingAnimationObject.delay = incoming.delay
 			_.extend incomingAnimationObject.properties, incoming.end
 			_.extend incomingAnimationObject, animationOptions
 			incomingAnimation = new Animation(incomingAnimationObject)
