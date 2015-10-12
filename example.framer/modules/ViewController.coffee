@@ -3,7 +3,7 @@
 # Add "moveOut" animations? what's the use case? covered by back?
 # If no need for moveOut, maybe we wont need consistent "In" naming scheme
 
-class exports.ViewController extends Layer
+class module.exports extends Layer
 		
 	constructor: (options={}) ->
 		options.width ?= Screen.width
@@ -39,12 +39,12 @@ class exports.ViewController extends Layer
 			incomingAnimation: incomingAnimation
 			outgoingAnimation: outgoingAnimation
 
-	back: -> 
+	back: ->
 		previous = @history[0]
 		if previous.view?
 
-			if previous.incomingAnimation is 'magicMove'
-				@magicMove previous.view
+			if previous.incomingAnimation.name is 'magicMove'
+				@magicMove previous.view, previous.incomingAnimation.animationOptions
 			else
 				backIn = previous.outgoingAnimation.reverse()
 				moveOut = previous.incomingAnimation.reverse()
@@ -59,13 +59,18 @@ class exports.ViewController extends Layer
 	applyAnimation: (newView, incoming, animationOptions, outgoing = {}) ->
 		unless newView is @current
 
-			# reset common properties in case they
-			# were changed during last animation
 			newView.animateStop()
+			# restore properties as they were 
+			# before previous animation
 			@current?.propsBeforeAnimation = @current.props
 			newView.props = newView.propsBeforeAnimation
 
-			@add newView if @subLayers.indexOf(newView) is -1
+			# add as sublayer if not already in viewcontroller
+			@addSubLayer newView if @subLayers.indexOf(newView) is -1
+			
+			# defaults
+			newView.visible = true
+			newView.point = {x: 0, y:0}
 
 			# Animate the current view
 			_.extend @current, outgoing.start
@@ -135,8 +140,6 @@ class exports.ViewController extends Layer
 	fadeIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
 			start:
-				x: 0
-				y: 0
 				opacity: 0
 			end:
 				opacity: 1
@@ -148,8 +151,6 @@ class exports.ViewController extends Layer
 	zoomIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
 			start:
-				x: 0
-				y: 0
 				scale: 0.8
 				opacity: 0
 			end:
@@ -160,8 +161,6 @@ class exports.ViewController extends Layer
 	zoomedIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
 			start:
-				x: 0
-				y: 0
 				scale: 1.5
 				opacity: 0
 			end:
@@ -172,8 +171,6 @@ class exports.ViewController extends Layer
 	spinIn: (newView, animationOptions = @animationOptions) ->
 		incoming =
 			start:
-				x: 0
-				y: 0
 				rotation: 180
 				scale: 0.8
 				opacity: 0
@@ -268,6 +265,8 @@ class exports.ViewController extends Layer
 
 	magicMove: (newView, animationOptions = @animationOptions) ->
 
+		# TODO: doesn't fade out missing layers in new view
+
 		traverseSubLayers = (layer) ->
 			arr = []
 			findSubLayer = (layer) ->
@@ -278,23 +277,27 @@ class exports.ViewController extends Layer
 				return arr
 			findSubLayer layer
 		
-		exisitingLayers = {}
+		existingLayers = {}
 		for sub in traverseSubLayers @current
-			exisitingLayers[sub.name] = sub
-		
+			existingLayers[sub.name] = sub
+
 		# proper switch with history support
-		newView.x = 0
-		newView.y = 0
 		@add newView if @subLayers.indexOf(newView) is -1
-		@saveCurrentToHistory 'magicMove'
+		newView.visible = true
+		newView.point = {x:0, y:0}
+		
+		@saveCurrentToHistory 
+			name: 'magicMove'
+			animationOptions: animationOptions
 		@current = newView
 		@current.bringToFront()
 		
 		# fancy animations with magic move
 		for sub in traverseSubLayers newView
-			if exisitingLayers[sub.name]?
-				match = exisitingLayers[sub.name]
-				newFrame = sub.frame
+			unless sub.originalFrame? then sub.originalFrame = sub.frame
+			match = existingLayers[sub.name]
+			if match?
+				newFrame = sub.originalFrame
 				prevFrame = match.frame
 				sub.frame = prevFrame
 				animationObj = 
