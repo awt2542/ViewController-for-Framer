@@ -185,7 +185,8 @@ class module.exports extends Layer
 
 	pushInRight: (newView, animationOptions = @animationOptions) ->
 		outgoing =
-			start: {}
+			start: 
+				x: 0
 			end:
 				x: -(@width/5)
 				brightness: 80
@@ -215,7 +216,8 @@ class module.exports extends Layer
 
 	moveInRight: (newView, animationOptions = @animationOptions) ->
 		outgoing =
-			start: {}
+			start: 
+				x: 0
 			end:
 				x: -@width
 		incoming =
@@ -227,7 +229,8 @@ class module.exports extends Layer
 
 	moveInLeft: (newView, animationOptions = @animationOptions) ->
 		outgoing =
-			start: {}
+			start:
+				x: 0
 			end:
 				x: @width
 		incoming =
@@ -239,7 +242,8 @@ class module.exports extends Layer
 
 	moveInUp: (newView, animationOptions = @animationOptions) ->
 		outgoing =
-			start: {}
+			start: 
+				y: 0
 			end:
 				y: -@height
 		incoming =
@@ -252,7 +256,8 @@ class module.exports extends Layer
 
 	moveInDown: (newView, animationOptions = @animationOptions) ->
 		outgoing =
-			start: {}
+			start: 
+				y: 0
 			end:
 				y: @height
 		incoming =
@@ -314,6 +319,7 @@ class module.exports extends Layer
 						opacity: 1
 			_.extend animationObj, animationOptions
 			sub.animate animationObj
+
 
 	# Backwards compatibility
 	transition: (newView, direction = 'right') ->
