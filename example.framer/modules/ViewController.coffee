@@ -319,6 +319,18 @@ class module.exports extends Layer
 						opacity: 1
 			_.extend animationObj, animationOptions
 			sub.animate animationObj
+			delete existingLayers[sub.name]
+
+		# fade out unused layers
+		for remainingLayer, layer of existingLayers
+			tempCopy = layer.copy()
+			tempCopy.superLayer = newView
+			animationObj = 
+					properties:
+						opacity: 0
+			_.extend animationObj, animationOptions
+			fadeOut = tempCopy.animate animationObj
+			tempCopy.on Events.AnimationEnd, -> @destroy()
 
 
 	# Backwards compatibility
