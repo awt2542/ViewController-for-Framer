@@ -16,23 +16,18 @@ class module.exports extends Layer
 
 		super options
 		@history = []
-		@on "change:subLayers", (changeList) ->
-			if changeList.added[0].name is options.initialViewName
-				@switchInstant changeList.added[0]
-			else
-				changeList.added[0].x = @width
 
 		if options.initialView?
 			@switchInstant options.initialView
 
-	add: (view, viaInternalChangeEvent = false) ->
-		if viaInternalChangeEvent
-			@switchInstant view
-		else
-			view.superLayer = @
-		view.on Events.Click, -> return # prevent click-through/bubbling
-		view.sendToBack()
-		
+		@on "change:subLayers", (changeList) ->
+			view = changeList.added[0]
+			view.on Events.Click, -> return # prevent click-through/bubbling
+			unless view.name is options.initialViewName
+				view.visible = false
+
+	add: (view) -> view.superLayer = @
+
 	saveCurrentToHistory: (incomingAnimation,outgoingAnimation) ->
 		@history.unshift
 			view: @current
