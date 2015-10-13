@@ -265,7 +265,10 @@ class module.exports extends Layer
 
 	magicMove: (newView, animationOptions = @animationOptions) ->
 
-		# TODO: doesn't fade out missing layers in new view
+		# restore properties as they were 
+		# before previous animation
+		@current?.propsBeforeAnimation = @current.props
+		newView.props = newView.propsBeforeAnimation
 
 		traverseSubLayers = (layer) ->
 			arr = []
