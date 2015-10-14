@@ -54,3 +54,7 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 - .moveInUp()
 - .moveInDown() 
 - .magicMove() - *make sure layer names are kept consistent across screens*
+
+###Contact
+
+Twitter: [@andreaswah](http://twitter.com/andreaswah)
