@@ -285,7 +285,7 @@ class module.exports extends Layer
 			existingLayers[sub.name] = sub
 
 		# proper switch with history support
-		@add newView if @subLayers.indexOf(newView) is -1
+		@addSubLayer newView if @subLayers.indexOf(newView) is -1
 		newView.visible = true
 		newView.point = {x:0, y:0}
 		
