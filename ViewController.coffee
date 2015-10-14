@@ -1,8 +1,3 @@
-# TODO:
-# Add custom animationOptions to .back()?
-# Add "moveOut" animations? what's the use case? covered by back?
-# If no need for moveOut, maybe we wont need consistent "In" naming scheme
-
 class module.exports extends Layer
 		
 	constructor: (options={}) ->
@@ -331,7 +326,7 @@ class module.exports extends Layer
 			tempCopy.on Events.AnimationEnd, -> @destroy()
 
 
-	# Backwards compatibility
+	# Backwards compatibility with https://github.com/chriscamargo/framer-viewNavigationController
 	transition: (newView, direction = 'right') ->
 		switch direction
 			when 'up' then @moveInDown newView
