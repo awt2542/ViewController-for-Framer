@@ -1,5 +1,5 @@
 ## ViewController-for-Framer
-The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in" and "magic move".
+The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in", "slide in" and "magic move".
 
 ![multistep](https://s3.amazonaws.com/f.cl.ly/items/3p1T3o1h3m433m3u0v3N/steps.png)
 
