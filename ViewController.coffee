@@ -297,7 +297,9 @@ class module.exports extends Layer
 				prevFrame = match.frame
 				animationObj = 
 					properties: newLayer.props
-				newLayer.props = match.props
+				simulatedProps = match.props
+				delete simulatedProps['image']
+				newLayer.props = simulatedProps
 			else # fade in new layers
 				newLayer.opacity = 0
 				animationObj = 
