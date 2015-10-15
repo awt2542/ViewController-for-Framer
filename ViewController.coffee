@@ -291,28 +291,31 @@ class module.exports extends Layer
 		@current.bringToFront()
 		
 		# fancy animations with magic move
-		for sub in traverseSubLayers newView
-			unless sub.originalFrame? then sub.originalFrame = sub.frame
-			match = existingLayers[sub.name]
+		for newLayer in traverseSubLayers newView
+			unless newLayer.originalFrame? then newLayer.originalFrame = newLayer.frame
+			match = existingLayers[newLayer.name]
 			if match?
-				newFrame = sub.originalFrame
+				newFrame = newLayer.originalFrame # original end state
 				prevFrame = match.frame
-				sub.frame = prevFrame
 				animationObj = 
 					properties:
 						x: newFrame.x
 						y: newFrame.y
 						width: newFrame.width
 						height: newFrame.height
+						rotation: newLayer.rotation
 						opacity: 1
+				# reset newLayer to properties of previous
+				newLayer.frame = prevFrame
+				newLayer.rotation = match.rotation
 			else # fade in new layers
-				sub.opacity = 0
+				newLayer.opacity = 0
 				animationObj = 
 					properties:
 						opacity: 1
 			_.extend animationObj, animationOptions
-			sub.animate animationObj
-			delete existingLayers[sub.name]
+			newLayer.animate animationObj
+			delete existingLayers[newLayer.name]
 
 		# fade out unused layers
 		for remainingLayer, layer of existingLayers
