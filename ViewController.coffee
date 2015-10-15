@@ -7,7 +7,6 @@ class module.exports extends Layer
 		options.initialViewName ?= 'initialView'
 		options.animationOptions ?= curve: "cubic-bezier(0.19, 1, 0.22, 1)", time: .7
 		options.backgroundColor ?= "black"
-		options.perspective ?= 1000
 
 		super options
 		@history = []
@@ -295,19 +294,10 @@ class module.exports extends Layer
 			unless newLayer.originalFrame? then newLayer.originalFrame = newLayer.frame
 			match = existingLayers[newLayer.name]
 			if match?
-				newFrame = newLayer.originalFrame # original end state
 				prevFrame = match.frame
 				animationObj = 
-					properties:
-						x: newFrame.x
-						y: newFrame.y
-						width: newFrame.width
-						height: newFrame.height
-						rotation: newLayer.rotation
-						opacity: 1
-				# reset newLayer to properties of previous
-				newLayer.frame = prevFrame
-				newLayer.rotation = match.rotation
+					properties: newLayer.props
+				newLayer.props = match.props
 			else # fade in new layers
 				newLayer.opacity = 0
 				animationObj = 
