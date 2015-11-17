@@ -11,10 +11,12 @@ The ViewController module for Framer.js helps you create multi step user flows w
 ### Get started
 1. Download the ViewController.coffee file to your project's modules folder and add
 `
-Views = require 'ViewController'
+ViewController = require 'ViewController'
 ` to the top of your app.coffee file.
 
-2. Set the initial view by writing `Views.initialView = sketch.homepage`. 
+2. Set the initial view by writing 
+`Views = new ViewController
+    initialView: sketch.homepage`. 
 
 3. Switch view using one of the built-in transitions. Eg. `btn.on Event.Click, -> Views.slideIn(anotherLayer)`
 
