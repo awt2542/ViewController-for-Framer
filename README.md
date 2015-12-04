@@ -34,6 +34,7 @@ The ViewController is just like a normal layer, but with a few tweaks. Here are 
 - .current - gives you the name of the current layer/view
 - .back() - automatically reverses previous transition and takes you back 1 step in history.
 - .initialViewName - subLayers with a name matching initialViewName will automatically be put as initialView. this value defaults to 'initialView'.
+- .backgroundColor - defaults to 'black'
 
 
 ### Transitions
