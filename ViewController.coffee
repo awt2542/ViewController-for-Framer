@@ -16,9 +16,10 @@ class module.exports extends Layer
 
 		@on "change:subLayers", (changeList) ->
 			view = changeList.added[0]
-			view.on Events.Click, -> return # prevent click-through/bubbling
-			unless view.name is options.initialViewName
-				view.visible = false
+			if view?
+				view.on Events.Click, -> return # prevent click-through/bubbling
+				unless view.name is options.initialViewName
+					view.visible = false
 
 	add: (view) -> view.superLayer = @
 
@@ -47,6 +48,9 @@ class module.exports extends Layer
 
 	applyAnimation: (newView, incoming, animationOptions, outgoing = {}) ->
 		unless newView is @current
+
+			if newView instanceof Layer isnt true
+				throw Error "ViewController: Can't animate "+newView
 
 			newView.animateStop()
 			# restore properties as they were 
