@@ -7,6 +7,7 @@ The ViewController module for Framer.js helps you create multi step user flows w
 
 - [iOS-style navigation](http://share.framerjs.com/dutzrzfvszto/)
 - [Image grid with magic move](http://share.framerjs.com/odobqcb9vjoi/)
+- [Medium article: Prototype User Flows](https://blog.prototypr.io/prototype-user-flows-in-framer-studio-dc87f5211a47#.ticqxm8r7)
 
 ### Get started
 1. Download the ViewController.coffee file to your project's modules folder and add
