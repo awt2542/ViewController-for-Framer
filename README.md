@@ -36,6 +36,8 @@ The ViewController is just like a normal layer, but with a few tweaks. Here are 
 - .back() - automatically reverses previous transition and takes you back 1 step in history.
 - .initialViewName - subLayers with a name matching initialViewName will automatically be put as initialView. this value defaults to 'initialView'.
 - .backgroundColor - defaults to 'black'
+- .scroll - automatically adds scroll components to each view. defaults to 'false'
+- .autoLink - automatically adds links from layers containing the name of an animation. eg. a layer named "slideIn_app" will slide in the layer "app" when clicked. defaults to 'true'
 
 
 ### Transitions

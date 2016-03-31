@@ -7,12 +7,26 @@ class module.exports extends Layer
 		options.initialViewName ?= 'initialView'
 		options.animationOptions ?= curve: "cubic-bezier(0.19, 1, 0.22, 1)", time: .7
 		options.backgroundColor ?= "black"
+		options.scroll ?= false
+		options.autoLink ?= true
 
 		super options
 		@history = []
 
 		if options.initialView?
 			@switchInstant options.initialView
+
+		animationNames = ['switchInstant','slideIn','slideInRight','slideInLeft','slideInDown','slideInUp','fadeIn','crossDissolve','zoomIn','zoomedIn','spinIn','pushIn','pushInRight','pushInLeft','moveIn','moveInRight','moveInLeft','moveInUp','moveInDown','magicMove']
+		if options.autoLink
+			for animationName in animationNames
+				layers = Framer.CurrentContext.getLayers()
+				for btn in layers
+					if _.contains btn.name, animationName
+						viewController = @
+						btn.onClick ->
+							anim = @name.split('_')[0]
+							linkName = @name.replace(anim+'_','')
+							viewController[anim] _.find(layers, (l) -> l.name is linkName)
 
 		@on "change:subLayers", (changeList) ->
 			view = changeList.added[0]
@@ -49,9 +63,6 @@ class module.exports extends Layer
 	applyAnimation: (newView, incoming, animationOptions, outgoing = {}) ->
 		unless newView is @current
 
-			if newView instanceof Layer isnt true
-				throw Error "ViewController: Can't animate "+newView
-
 			newView.animateStop()
 			# restore properties as they were 
 			# before previous animation
@@ -59,7 +70,25 @@ class module.exports extends Layer
 			newView.props = newView.propsBeforeAnimation
 
 			# add as sublayer if not already in viewcontroller
-			@addSubLayer newView if @subLayers.indexOf(newView) is -1
+			if @subLayers.indexOf(newView) is -1
+
+				@addSubLayer newView
+
+				# unless user changed .scroll setting, add a scrollComponent
+				if @scroll
+					descendants = newView.descendants
+					scrollComponent = new ScrollComponent
+						name: "scrollComponent"
+						width: @width
+						height: @height
+						parent: newView
+					if newView.width <= @width
+						scrollComponent.scrollHorizontal = false
+					if newView.height <= @height
+						scrollComponent.scrollVertical = false
+					for d in descendants
+						d.parent = scrollComponent.content
+					newView.scrollComponent = scrollComponent # make it accessible as a property
 			
 			# defaults
 			newView.visible = true
