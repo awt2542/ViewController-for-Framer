@@ -76,7 +76,7 @@ class module.exports extends Layer
 
 				# unless user changed .scroll setting, add a scrollComponent
 				if @scroll
-					descendants = newView.descendants
+					children = newView.children
 					scrollComponent = new ScrollComponent
 						name: "scrollComponent"
 						width: @width
@@ -86,8 +86,8 @@ class module.exports extends Layer
 						scrollComponent.scrollHorizontal = false
 					if newView.height <= @height
 						scrollComponent.scrollVertical = false
-					for d in descendants
-						d.parent = scrollComponent.content
+					for c in children
+						c.parent = scrollComponent.content
 					newView.scrollComponent = scrollComponent # make it accessible as a property
 			
 			# defaults
