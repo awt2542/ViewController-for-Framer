@@ -1,0 +1,23 @@
+{
+  "author" : "",
+  "commands" : [
+    {
+      "script" : "script.cocoascript",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Generate Link",
+      "identifier" : "generate link"
+    }
+  ],
+  "menu" : {
+    "items" : [
+      "generate link"
+    ],
+    "title" : "ViewController"
+  },
+  "identifier" : "com.example.sketch.156fcaaf-4d3d-4534-9c0d-e89f33efc0a5",
+  "version" : "1.0",
+  "description" : "",
+  "authorEmail" : "",
+  "name" : "ViewController"
+}

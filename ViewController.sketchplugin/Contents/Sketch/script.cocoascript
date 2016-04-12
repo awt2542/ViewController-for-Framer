@@ -1,0 +1,33 @@
+// TODO: Add support for backButton
+
+var onRun = function(context) {
+  	function createSelect(msg, items, selectedItemIndex){
+      selectedItemIndex = selectedItemIndex || 0
+
+      var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
+      accessory.addItemsWithObjectValues(items)
+      accessory.selectItemAtIndex(selectedItemIndex)
+
+      var alert = NSAlert.alloc().init()
+      alert.setMessageText(msg)
+      alert.addButtonWithTitle('OK')
+      alert.addButtonWithTitle('Cancel')
+      alert.setAccessoryView(accessory)
+
+      var responseCode = alert.runModal()
+      var sel = accessory.indexOfSelectedItem()
+
+      return sel
+    }
+
+  if (context.selection.count() > 1){
+    var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
+    var keywords = ['switchInstant','fadeIn','zoomIn','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
+    var choice = createSelect('Choose a transition',options, 1)
+    var button = context.selection[0];
+    var view = context.selection[1];
+    button.setName(keywords[choice]+"_"+view.name());
+  } else {
+    context.document.showMessage("You need to select at least 2 layers")
+  }
+};
