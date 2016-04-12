@@ -5,13 +5,13 @@
       "script" : "script.cocoascript",
       "handler" : "onRun",
       "shortcut" : "",
-      "name" : "Generate Link",
-      "identifier" : "generate link"
+      "name" : "Create a link",
+      "identifier" : "createLink"
     }
   ],
   "menu" : {
     "items" : [
-      "generate link"
+      "createLink"
     ],
     "title" : "ViewController"
   },

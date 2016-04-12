@@ -8,26 +8,35 @@ var onRun = function(context) {
       accessory.addItemsWithObjectValues(items)
       accessory.selectItemAtIndex(selectedItemIndex)
 
+      var button = context.selection[0];
+      var view = context.selection[1];
       var alert = NSAlert.alloc().init()
       alert.setMessageText(msg)
-      alert.addButtonWithTitle('OK')
-      alert.addButtonWithTitle('Cancel')
+      alert.setInformativeText('From "'+button.name()+'" to "'+view.name()+'"')
+      
+      alert.addButtonWithTitle('Create link') // 1000
+      alert.addButtonWithTitle('Cancel') // 1001
       alert.setAccessoryView(accessory)
 
       var responseCode = alert.runModal()
       var sel = accessory.indexOfSelectedItem()
 
-      return sel
+      if (responseCode == 1000){
+        return sel
+      }
+      
     }
 
-  if (context.selection.count() > 1){
+  if (context.selection.count() == 2){
     var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
     var keywords = ['switchInstant','fadeIn','zoomIn','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
     var choice = createSelect('Choose a transition',options, 1)
     var button = context.selection[0];
     var view = context.selection[1];
-    button.setName(keywords[choice]+"_"+view.name());
+    if (choice){
+      button.setName(keywords[choice]+"_"+view.name());
+    }
   } else {
-    context.document.showMessage("You need to select at least 2 layers")
+    context.document.showMessage("Select exactly 2 layers before creating a link")
   }
 };
