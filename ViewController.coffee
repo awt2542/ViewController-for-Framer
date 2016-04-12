@@ -13,6 +13,7 @@ class module.exports extends Layer
 
 		super options
 		@history = []
+		@current = @ # hack to make transitions work when current doesn't exist. todo.
 
 		@onChange "subLayers", (changeList) =>
 			view = changeList.added[0]
@@ -36,8 +37,8 @@ class module.exports extends Layer
 					for c in children
 						c.parent = scrollComponent.content
 					view.scrollComponent = scrollComponent # make it accessible as a property
-				# reset size since content moved to scrollComponent. prevents scroll bug when dragging outside.
-				view.size = {width: @width, height: @height}
+					# reset size since content moved to scrollComponent. prevents scroll bug when dragging outside.
+					view.size = {width: @width, height: @height}
 
 		transitions =
 			switchInstant:
@@ -47,6 +48,10 @@ class module.exports extends Layer
 				newView:
 					from: {opacity: 0}
 					to: {opacity: 1}
+			zoomIn:
+				newView:
+					from: {scale: 0.8, opacity: 0}
+					to: {scale: 1, opacity: 1}
 			slideInUp:
 				newView:
 					from: {y: @height}
@@ -68,16 +73,17 @@ class module.exports extends Layer
 					to: {maxY: 0}
 			slideOutRight:
 				oldView:
-					to: {maxX: 0}
+					to: {x: @width}
 			slideOutDown:
 				oldView:
 					to: {y: @height}
 			slideOutLeft:
 				oldView:
-					to: {x: @width}
+					to: {maxX: 0}
 
 		# shortcuts
 		transitions.slideIn = transitions.slideInRight
+		transitions.slideOut = transitions.slideOutRight
 
 		_.each transitions, (animProps, name) =>
 
@@ -93,13 +99,10 @@ class module.exports extends Layer
 
 			@[name] = (newView, animationOptions = @animationOptions) =>
 
-				if newView is @current then return
-
-				unless @current? then @current = newView # quick fix
+				return if newView is @current
 
 				# reset before animation
-				newView.point = {x:0,y: 0}
-				newView.opacity = 1
+				newView.point = {x:0, y: 0}
 
 				# oldView
 				@current.props = animProps.oldView?.from
