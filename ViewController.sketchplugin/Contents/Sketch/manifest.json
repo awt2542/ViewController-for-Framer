@@ -1,17 +1,25 @@
 {
-  "author" : "",
+  "author" : "Andreas",
   "commands" : [
     {
-      "script" : "script.cocoascript",
+      "script" : "createLink.cocoascript",
       "handler" : "onRun",
       "shortcut" : "",
       "name" : "Create a link",
       "identifier" : "createLink"
+    },
+    {
+      "script" : "createBackBtn.cocoascript",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Create back button",
+      "identifier" : "createBackBtn"
     }
   ],
   "menu" : {
     "items" : [
-      "createLink"
+      "createLink",
+      "createBackBtn"
     ],
     "title" : "ViewController"
   },

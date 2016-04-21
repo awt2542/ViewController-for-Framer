@@ -1,0 +1,6 @@
+var onRun = function(context) {
+    for (var i=0; i < context.selection.count(); i++){
+      var item = context.selection[i]
+      item.setName("backButton");
+    }
+};

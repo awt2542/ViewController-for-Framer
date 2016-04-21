@@ -1,5 +1,3 @@
-// TODO: Add support for backButton
-
 var onRun = function(context) {
     
     function createSelect(first,second,selectIndex){
