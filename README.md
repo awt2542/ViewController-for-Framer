@@ -1,12 +1,11 @@
 ## ViewController-for-Framer
-The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in", "slide in" and "magic move".
+The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in", "zoom in" and "slide in".
 
 ![multistep](https://s3.amazonaws.com/f.cl.ly/items/3p1T3o1h3m433m3u0v3N/steps.png)
 
 ### Examples
 
 - [iOS-style navigation](http://share.framerjs.com/dutzrzfvszto/)
-- [Image grid with magic move](http://share.framerjs.com/odobqcb9vjoi/)
 - [Medium article: Prototype User Flows](https://blog.prototypr.io/prototype-user-flows-in-framer-studio-dc87f5211a47#.ticqxm8r7)
 
 ### Get started
@@ -19,7 +18,7 @@ ViewController = require 'ViewController'
 `Views = new ViewController
     initialView: sketch.homepage`. 
 
-3. Switch view using one of the built-in transitions. Eg. `btn.on Event.Click, -> Views.slideIn(anotherLayer)`
+3. Switch view using one of the built-in transitions. Eg. `btn.onClick -> Views.slideIn(anotherLayer)`
 
 If you prefer to create layers in code you can add them as subLayers to your ViewController. Set the first layer's .name property to 'initialView' to make it visible inside the controller.
 
@@ -30,14 +29,15 @@ The ViewController is just like a normal layer, but with a few tweaks. Here are 
 - .width - defaults to Screen.width
 - .height - defaults to Screen.height
 - .animationOptions - default animation options for all transitions
-- .add(<layer>) - adds a new view. short for .addSubLayer()
 - .initialView - set the initial view
-- .current - gives you the name of the current layer/view
+- .currentView - gives you the name of the current layer/view
 - .back() - automatically reverses previous transition and takes you back 1 step in history.
-- .initialViewName - subLayers with a name matching initialViewName will automatically be put as initialView. this value defaults to 'initialView'.
+- .initialViewName - the layer matching the initialViewName will automatically be put as initialView when the viewController is created. this value defaults to 'initialView'.
+- .backButtonName - layers matching this name will automatically link to Views.back() on click.
 - .backgroundColor - defaults to 'black'
 - .scroll - automatically adds scroll components to each view. defaults to 'false'
 - .autoLink - automatically adds links from layers containing the name of an animation. eg. a layer named "slideIn_app" will slide in the layer "app" when clicked. defaults to 'true'
+- .onChange "currentView", (new,old) -> return - listen to view changes
 
 
 ### Transitions
@@ -45,21 +45,18 @@ The ViewController is just like a normal layer, but with a few tweaks. Here are 
 Transitions are trigged by using one of the transition methods. Eg. `Views.fadeIn(anotherLayer)`. Each transition takes an animationOption object as the second argument. Eg. `Views.fadeIn(anotherLayer, time: 2)`
 
 - .switchInstant()
-- .slideIn() / .slideInRight()
-- .slideInLeft() - 
-- .slideInDown()
 - .slideInUp()
-- .fadeIn() / .crossDissolve()
+- .slideInRight()
+- .slideInDown()
+- .slideInLeft()
+- .slideOutUp()
+- .slideOutRight()
+- .slideOutDown()
+- .slideOutLeft()
+- .fadeIn()
+- .fadeOut()
 - .zoomIn()
-- .zoomedIn()
-- .spinIn 
-- .pushIn() / .pushInRight()
-- .pushInLeft()
-- .moveIn() / .moveInRight()
-- .moveInLeft()
-- .moveInUp()
-- .moveInDown() 
-- .magicMove() - *make sure layer names are kept consistent across screens*
+- .zoomOut()
 
 ###Contact
 
