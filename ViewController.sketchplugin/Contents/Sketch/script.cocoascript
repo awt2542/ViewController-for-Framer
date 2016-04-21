@@ -1,41 +1,39 @@
 // TODO: Add support for backButton
 
 var onRun = function(context) {
-  	function createSelect(msg, items, selectedItemIndex){
-      selectedItemIndex = selectedItemIndex || 0
-
+    
+    function createSelect(first,second,selectIndex){
+      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
+      var keywords = ['switchInstant','fadeIn','zoomIn','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
       var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
-      accessory.addItemsWithObjectValues(items)
-      accessory.selectItemAtIndex(selectedItemIndex)
-
-      var button = context.selection[0];
-      var view = context.selection[1];
+      accessory.addItemsWithObjectValues(options)
+      accessory.selectItemAtIndex(selectIndex) // pre-select first item
+      
+      var button = first
+      var view = second
+      
       var alert = NSAlert.alloc().init()
-      alert.setMessageText(msg)
-      alert.setInformativeText('From "'+button.name()+'" to "'+view.name()+'"')
+      alert.setMessageText('Choose a transition')
+      alert.setInformativeText('"'+button.name()+'" to "'+view.name()+'"')
       
       alert.addButtonWithTitle('Create link') // 1000
       alert.addButtonWithTitle('Cancel') // 1001
+      alert.addButtonWithTitle('Reverse ↔') // 1002
       alert.setAccessoryView(accessory)
 
       var responseCode = alert.runModal()
       var sel = accessory.indexOfSelectedItem()
 
       if (responseCode == 1000){
-        return sel
+        button.setName(keywords[sel]+"_"+view.name());
+      } else if (responseCode == 1002) {
+        createSelect(second,first,sel)
       }
       
     }
 
   if (context.selection.count() == 2){
-    var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
-    var keywords = ['switchInstant','fadeIn','zoomIn','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
-    var choice = createSelect('Choose a transition',options, 1)
-    var button = context.selection[0];
-    var view = context.selection[1];
-    if (choice){
-      button.setName(keywords[choice]+"_"+view.name());
-    }
+    createSelect(context.selection[0],context.selection[1], 0)
   } else {
     context.document.showMessage("Select exactly 2 layers before creating a link")
   }
