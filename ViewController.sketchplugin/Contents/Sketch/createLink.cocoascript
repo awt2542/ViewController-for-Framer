@@ -1,8 +1,8 @@
 var onRun = function(context) {
     
     function createSelect(first,second,selectIndex){
-      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
-      var keywords = ['switchInstant','fadeIn','zoomIn','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
+      var options = ['Switch instant ⚡️','Fade in 👻','Fade out 👻','Zoom in  👀','Zoom out  👀','Slide in up 👆','Slide in right 👈','Slide in down 👇','Slide in left 👉','Slide out up 👆','Slide out right 👉','Slide out down 👇','Slide out left 👈']
+      var keywords = ['switchInstant','fadeIn','fadeOut','zoomIn','zoomOut','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
       var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
       accessory.addItemsWithObjectValues(options)
       accessory.selectItemAtIndex(selectIndex) // pre-select first item
