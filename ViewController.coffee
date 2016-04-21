@@ -13,7 +13,7 @@ class module.exports extends Layer
 
 		super options
 		@history = []
-		@current = @ # hack to make transitions work when current doesn't exist. todo.
+		@currentView = @ # hack to make transitions work when currentView doesn't exist. fix todo.
 
 		@onChange "subLayers", (changeList) =>
 			view = changeList.added[0]
@@ -48,10 +48,16 @@ class module.exports extends Layer
 				newView:
 					from: {opacity: 0}
 					to: {opacity: 1}
+			fadeOut:
+				oldView:
+					to: {opacity: 0}
 			zoomIn:
 				newView:
 					from: {scale: 0.8, opacity: 0}
 					to: {scale: 1, opacity: 1}
+			zoomOut:
+				oldView:
+					to: {scale: 0.8, opacity: 0}
 			slideInUp:
 				newView:
 					from: {y: @height}
@@ -95,33 +101,40 @@ class module.exports extends Layer
 						btn.onClick ->
 							anim = @name.split('_')[0]
 							linkName = @name.replace(anim+'_','')
+							linkName = linkName.replace(/\d+/g, '') # remove numbers
 							viewController[anim] _.find(layers, (l) -> l.name is linkName)
 
 			@[name] = (newView, animationOptions = @animationOptions) =>
 
-				return if newView is @current
+				return if newView is @currentView
 
-				# reset before animation
+				# make sure the new layer is inside the viewcontroller
+				newView.parent = @
+				newView.sendToBack()
+
+				# reset props in case they were changed by a prev animation
 				newView.point = {x:0, y: 0}
+				newView.opacity = 1
+				newView.scale = 1
 
 				# oldView
-				@current.props = animProps.oldView?.from
-				outgoing = @current.animate _.extend animationOptions, {properties: animProps.oldView?.to}
+				@currentView.props = animProps.oldView?.from
+				outgoing = @currentView.animate _.extend animationOptions, {properties: animProps.oldView?.to}
 
 				# newView
 				newView.props = animProps.newView?.from
 				incoming = newView.animate _.extend animationOptions, {properties: animProps.newView?.to}
-
-				# layer order
-				newView.parent = @
-				if animProps.newView?
-					newView.placeBefore(@current)
-				else
-					newView.placeBehind(@current)
 				
-				@saveCurrentToHistory outgoing, incoming
-				@current = newView
-				@emit("change:current", @current)
+				# layer order
+				if _.contains name, 'Out'
+					newView.placeBehind(@currentView)
+					outgoing.on Events.AnimationEnd, => @currentView.bringToFront()
+				else
+					newView.placeBefore(@currentView)
+				
+				@saveCurrentViewToHistory name, outgoing, incoming
+				@currentView = newView
+				@emit("change:currentView", @currentView, @history[0].view)
 
 		if options.initialViewName?
 			autoInitial = _.find Framer.CurrentContext.getLayers(), (l) -> l.name is options.initialViewName
@@ -135,9 +148,10 @@ class module.exports extends Layer
 			for btn in backButtons
 				btn.onClick => @back()
 
-	saveCurrentToHistory: (outgoingAnimation,incomingAnimation) ->
+	saveCurrentViewToHistory: (name,outgoingAnimation,incomingAnimation) ->
 		@history.unshift
-			view: @current
+			view: @currentView
+			animationName: name
 			incomingAnimation: incomingAnimation
 			outgoingAnimation: outgoingAnimation
 
@@ -145,12 +159,15 @@ class module.exports extends Layer
 		previous = @history[0]
 		if previous.view?
 
+			if _.contains previous.animationName, 'Out'
+				previous.view.bringToFront()
+
 			backIn = previous.outgoingAnimation.reverse()
 			moveOut = previous.incomingAnimation.reverse()
 
 			backIn.start()
 			moveOut.start()
 
-			@current = previous.view
+			@currentView = previous.view
 			@history.shift()
-			moveOut.on Events.AnimationEnd, => @current.bringToFront()
+			moveOut.on Events.AnimationEnd, => @currentView.bringToFront()
