@@ -60,11 +60,12 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 
 ### Basic example
 
-    sketch = Framer.Importer.load("imported/project@1x")
-    ViewController = require 'ViewController'
-    Views = new ViewController
-    Views.slideInRight sketch.myArtboard, time: 0.2
-
+```coffeescript
+sketch = Framer.Importer.load("imported/project@1x")
+ViewController = require 'ViewController'
+Views = new ViewController
+Views.slideInRight sketch.myArtboard, time: 0.2
+```
 
 ###Contact
 
