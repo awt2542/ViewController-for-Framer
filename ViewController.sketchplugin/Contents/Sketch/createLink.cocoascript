@@ -23,16 +23,23 @@ var onRun = function(context) {
       var sel = accessory.indexOfSelectedItem()
 
       if (responseCode == 1000){
+        context.document.showMessage("ViewController: Renamed 1 layer")
         button.setName(keywords[sel]+"_"+view.name());
       } else if (responseCode == 1002) {
-        createSelect(second,first,sel)
+        createSelect(view,button,sel)
       }
       
     }
 
   if (context.selection.count() == 2){
-    createSelect(context.selection[0],context.selection[1], 0)
+    var one = context.selection[0]
+    var second = context.selection[1]
+    if (second.class() == "MSArtboardGroup"){
+      createSelect(one,second,0)
+    } else {
+      createSelect(second,one,0)
+    }
   } else {
-    context.document.showMessage("Select exactly 2 layers before creating a link")
+    context.document.showMessage("ViewController: Select exactly 2 layers before creating a link")
   }
 };
