@@ -42,7 +42,7 @@ The ViewController is just like a normal layer, but with a few tweaks. Here are 
 
 ### Transitions
 
-Transitions are trigged by using one of the transition methods. Eg. `Views.fadeIn(anotherLayer)`. Each transition takes an animationOption object as the second argument. Eg. `Views.fadeIn(anotherLayer, time: 2)`
+Transitions are trigged by using one of the transition methods. Eg. `Views.fadeIn(anotherLayer)`. Each transition takes an animationOption object as the second argument. Eg. `Views.fadeIn(anotherLayer, time: 2)`.
 
 - .switchInstant()
 - .slideInUp()
@@ -57,6 +57,14 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 - .fadeOut()
 - .zoomIn()
 - .zoomOut()
+
+### Basic example
+
+    sketch = Framer.Importer.load("imported/project@1x")
+    ViewController = require 'ViewController'
+    Views = new ViewController
+    Views.slideInRight sketch.myArtboard, time: 0.2
+
 
 ###Contact
 
