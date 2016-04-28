@@ -1,0 +1,31 @@
+{
+  "author" : "Andreas",
+  "commands" : [
+    {
+      "script" : "createLink.cocoascript",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Create a link",
+      "identifier" : "createLink"
+    },
+    {
+      "script" : "createBackBtn.cocoascript",
+      "handler" : "onRun",
+      "shortcut" : "",
+      "name" : "Create back button",
+      "identifier" : "createBackBtn"
+    }
+  ],
+  "menu" : {
+    "items" : [
+      "createLink",
+      "createBackBtn"
+    ],
+    "title" : "ViewController"
+  },
+  "identifier" : "com.example.sketch.156fcaaf-4d3d-4534-9c0d-e89f33efc0a5",
+  "version" : "1.0",
+  "description" : "",
+  "authorEmail" : "",
+  "name" : "ViewController"
+}

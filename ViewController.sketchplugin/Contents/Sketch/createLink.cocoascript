@@ -1,0 +1,47 @@
+var onRun = function(context) {
+    
+    function createSelect(first,second,selectIndex){
+      var options = ['Switch instant ⚡️','Fade in 👻','Fade out 👻','Zoom in  👀','Zoom out  👀','Slide in up ⬆️','Slide in right ⬅️','Slide in down ⬇️','Slide in left ➡️','Slide out up ⬆️','Slide out right ➡️','Slide out down ⬇️','Slide out left ⬅️']
+      var keywords = ['switchInstant','fadeIn','fadeOut','zoomIn','zoomOut','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft']
+      var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
+      accessory.addItemsWithObjectValues(options)
+      accessory.selectItemAtIndex(selectIndex) // pre-select first item
+      
+      var button = first
+      var view = second
+      log("button"+button)
+      log("view"+view)
+      
+      var alert = NSAlert.alloc().init()
+      alert.setMessageText('Choose a transition')
+      alert.setInformativeText('"'+button.name()+'" to "'+view.name()+'"')
+      
+      alert.addButtonWithTitle('Create link') // 1000
+      alert.addButtonWithTitle('Cancel') // 1001
+      alert.addButtonWithTitle('Reverse ↔') // 1002
+      alert.setAccessoryView(accessory)
+
+      var responseCode = alert.runModal()
+      var sel = accessory.indexOfSelectedItem()
+
+      if (responseCode == 1000){
+        context.document.showMessage("ViewController: Renamed 1 layer")
+        button.setName(keywords[sel]+"_"+view.name());
+      } else if (responseCode == 1002) {
+        createSelect(view,button,sel)
+      }
+      
+    }
+
+  if (context.selection.count() == 2){
+    var one = context.selection[0]
+    var second = context.selection[1]
+    if (second.class() == "MSArtboardGroup"){
+      createSelect(one,second,0)
+    } else {
+      createSelect(second,one,0)
+    }
+  } else {
+    context.document.showMessage("ViewController: Select exactly 2 layers before creating a link")
+  }
+};

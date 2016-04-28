@@ -5,6 +5,7 @@ class module.exports extends Layer
 		options.height ?= Screen.height
 		options.clip ?= true
 		options.initialViewName ?= 'initialView'
+		options.backButtonName ?= 'backButton'
 		options.animationOptions ?= curve: "cubic-bezier(0.19, 1, 0.22, 1)", time: .7
 		options.backgroundColor ?= "black"
 		options.scroll ?= false
@@ -12,34 +13,145 @@ class module.exports extends Layer
 
 		super options
 		@history = []
+		@currentView = @ # hack to make transitions work when currentView doesn't exist. fix todo.
 
-		if options.initialView?
-			@switchInstant options.initialView
+		@onChange "subLayers", (changeList) =>
+			view = changeList.added[0]
+			if view?
+				# default behaviors for views
+				view.clip = true
+				view.on Events.Click, -> return # prevent click-through/bubbling
+				# add scrollcomponent
+				if @scroll
+					children = view.children
+					scrollComponent = new ScrollComponent
+						name: "scrollComponent"
+						width: @width
+						height: @height
+						parent: view
+					scrollComponent.content.backgroundColor = ""
+					if view.width <= @width
+						scrollComponent.scrollHorizontal = false
+					if view.height <= @height
+						scrollComponent.scrollVertical = false
+					for c in children
+						c.parent = scrollComponent.content
+					view.scrollComponent = scrollComponent # make it accessible as a property
+					# reset size since content moved to scrollComponent. prevents scroll bug when dragging outside.
+					view.size = {width: @width, height: @height}
 
-		animationNames = ['switchInstant','slideIn','slideInRight','slideInLeft','slideInDown','slideInUp','fadeIn','crossDissolve','zoomIn','zoomedIn','spinIn','pushIn','pushInRight','pushInLeft','moveIn','moveInRight','moveInLeft','moveInUp','moveInDown','magicMove']
-		if options.autoLink
-			for animationName in animationNames
+		transitions =
+			switchInstant:
+				newView:
+					to: {x: 0, y: 0}
+			fadeIn:
+				newView:
+					from: {opacity: 0}
+					to: {opacity: 1}
+			fadeOut:
+				oldView:
+					to: {opacity: 0}
+			zoomIn:
+				newView:
+					from: {scale: 0.8, opacity: 0}
+					to: {scale: 1, opacity: 1}
+			zoomOut:
+				oldView:
+					to: {scale: 0.8, opacity: 0}
+			slideInUp:
+				newView:
+					from: {y: @height}
+					to: {y: 0}
+			slideInRight:
+				newView:
+					from: {x: @width}
+					to: {x: 0}
+			slideInDown:
+				newView:
+					from: {maxY: 0}
+					to: {y: 0}
+			slideInLeft:
+				newView:
+					from: {maxX: 0}
+					to: {maxX: @width}
+			slideOutUp:
+				oldView:
+					to: {maxY: 0}
+			slideOutRight:
+				oldView:
+					to: {x: @width}
+			slideOutDown:
+				oldView:
+					to: {y: @height}
+			slideOutLeft:
+				oldView:
+					to: {maxX: 0}
+
+		# shortcuts
+		transitions.slideIn = transitions.slideInRight
+		transitions.slideOut = transitions.slideOutRight
+
+		_.each transitions, (animProps, name) =>
+
+			if options.autoLink
 				layers = Framer.CurrentContext.getLayers()
 				for btn in layers
-					if _.contains btn.name, animationName
+					if _.contains btn.name, name
 						viewController = @
 						btn.onClick ->
 							anim = @name.split('_')[0]
 							linkName = @name.replace(anim+'_','')
+							linkName = linkName.replace(/\d+/g, '') # remove numbers
 							viewController[anim] _.find(layers, (l) -> l.name is linkName)
 
-		@on "change:subLayers", (changeList) ->
-			view = changeList.added[0]
-			if view?
-				view.on Events.Click, -> return # prevent click-through/bubbling
-				unless view.name is options.initialViewName
-					view.visible = false
+			@[name] = (newView, animationOptions = @animationOptions) =>
 
-	add: (view) -> view.superLayer = @
+				return if newView is @currentView
 
-	saveCurrentToHistory: (incomingAnimation,outgoingAnimation) ->
+				# make sure the new layer is inside the viewcontroller
+				newView.parent = @
+				newView.sendToBack()
+
+				# reset props in case they were changed by a prev animation
+				newView.point = {x:0, y: 0}
+				newView.opacity = 1
+				newView.scale = 1
+
+				# oldView
+				@currentView.props = animProps.oldView?.from
+				outgoing = @currentView.animate _.extend animationOptions, {properties: animProps.oldView?.to}
+
+				# newView
+				newView.props = animProps.newView?.from
+				incoming = newView.animate _.extend animationOptions, {properties: animProps.newView?.to}
+				
+				# layer order
+				if _.contains name, 'Out'
+					newView.placeBehind(@currentView)
+					outgoing.on Events.AnimationEnd, => @currentView.bringToFront()
+				else
+					newView.placeBefore(@currentView)
+				
+				@saveCurrentViewToHistory name, outgoing, incoming
+				@currentView = newView
+				@emit("change:currentView", @currentView, @history[0].view)
+
+		if options.initialViewName?
+			autoInitial = _.find Framer.CurrentContext.getLayers(), (l) -> l.name is options.initialViewName
+			if autoInitial? then @switchInstant autoInitial
+
+		if options.initialView?
+			@switchInstant options.initialView
+
+		if options.backButtonName?
+			backButtons = _.filter Framer.CurrentContext.getLayers(), (l) -> _.contains l.name, options.backButtonName
+			for btn in backButtons
+				btn.onClick => @back()
+
+	saveCurrentViewToHistory: (name,outgoingAnimation,incomingAnimation) ->
 		@history.unshift
-			view: @current
+			view: @currentView
+			animationName: name
 			incomingAnimation: incomingAnimation
 			outgoingAnimation: outgoingAnimation
 
@@ -47,317 +159,15 @@ class module.exports extends Layer
 		previous = @history[0]
 		if previous.view?
 
-			if previous.incomingAnimation.name is 'magicMove'
-				@magicMove previous.view, previous.incomingAnimation.animationOptions
-			else
-				backIn = previous.outgoingAnimation.reverse()
-				moveOut = previous.incomingAnimation.reverse()
+			if _.contains previous.animationName, 'Out'
+				previous.view.bringToFront()
 
-				backIn.start()
-				moveOut.start()
+			backIn = previous.outgoingAnimation.reverse()
+			moveOut = previous.incomingAnimation.reverse()
 
-				@current = previous.view
-				@history.shift()
-				moveOut.on Events.AnimationEnd, => @current.bringToFront()
+			backIn.start()
+			moveOut.start()
 
-	applyAnimation: (newView, incoming, animationOptions, outgoing = {}) ->
-		unless newView is @current
-
-			newView.animateStop()
-			# restore properties as they were 
-			# before previous animation
-			@current?.propsBeforeAnimation = @current.props
-			newView.props = newView.propsBeforeAnimation
-
-			# add as sublayer if not already in viewcontroller
-			if @subLayers.indexOf(newView) is -1
-
-				@addSubLayer newView
-
-				# unless user changed .scroll setting, add a scrollComponent
-				if @scroll
-					children = newView.children
-					scrollComponent = new ScrollComponent
-						name: "scrollComponent"
-						width: @width
-						height: @height
-						parent: newView
-					if newView.width <= @width
-						scrollComponent.scrollHorizontal = false
-					if newView.height <= @height
-						scrollComponent.scrollVertical = false
-					for c in children
-						c.parent = scrollComponent.content
-					newView.scrollComponent = scrollComponent # make it accessible as a property
-			
-			# defaults
-			newView.visible = true
-			newView.point = {x: 0, y:0}
-
-			# Animate the current view
-			_.extend @current, outgoing.start
-			outgoingAnimationObject =
-				layer: @current
-				properties: {}
-			_.extend outgoingAnimationObject.properties, outgoing.end
-			_.extend outgoingAnimationObject, animationOptions
-			outgoingAnimation = new Animation(outgoingAnimationObject)
-			outgoingAnimation.start()
-
-			# Animate the new view
-			_.extend newView, incoming.start
-			incomingAnimationObject = 
-				layer: newView
-				properties: {}
-			_.extend incomingAnimationObject.properties, incoming.end
-			_.extend incomingAnimationObject, animationOptions
-			incomingAnimation = new Animation(incomingAnimationObject)
-			incomingAnimation.start()
-
-			@saveCurrentToHistory incomingAnimation, outgoingAnimation
-			@current = newView
-			@current.bringToFront()
-
-	### ANIMATIONS ###
-
-	switchInstant: (newView) -> @fadeIn newView, time: 0
-
-	slideIn: (newView, animationOptions = @animationOptions) -> 
-		@slideInRight newView, animationOptions
-
-	slideInLeft: (newView, animationOptions = @animationOptions) -> 
-		incoming =
-			start:
-				x: -@width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	slideInRight: (newView, animationOptions = @animationOptions) -> 
-		incoming =
-			start:
-				x: @width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	slideInDown: (newView, animationOptions = @animationOptions) -> 
-		incoming =
-			start:
-				y: -@height
-				x: 0
-			end:
-				y: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	slideInUp: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				y: @height
-				x: 0
-			end:
-				y: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	fadeIn: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				opacity: 0
-			end:
-				opacity: 1
-		@applyAnimation newView, incoming, animationOptions
-
-	crossDissolve: (newView, animationOptions = @animationOptions) -> 
-		@fadeIn newView, animationOptions
-			
-	zoomIn: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				scale: 0.8
-				opacity: 0
-			end:
-				scale: 1
-				opacity: 1
-		@applyAnimation newView, incoming, animationOptions
-
-	zoomedIn: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				scale: 1.5
-				opacity: 0
-			end:
-				scale: 1
-				opacity: 1
-		@applyAnimation newView, incoming, animationOptions
-		
-	spinIn: (newView, animationOptions = @animationOptions) ->
-		incoming =
-			start:
-				rotation: 180
-				scale: 0.8
-				opacity: 0
-			end:
-				scale: 1
-				opacity: 1
-				rotation: 0
-		@applyAnimation newView, incoming, animationOptions
-
-	pushIn: (newView, animationOptions = @animationOptions) -> 
-		@pushInRight newView, animationOptions
-
-	pushInRight: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: 
-				x: 0
-			end:
-				x: -(@width/5)
-				brightness: 80
-		incoming =
-			start:
-				brightness: 100
-				x: @width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	pushInLeft: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: {}
-			end:
-				x: +(@width/5)
-				brightness: 90
-		incoming =
-			start:
-				x: -@width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	moveIn: (newView, animationOptions = @animationOptions) -> 
-		@moveInRight newView, animationOptions
-
-	moveInRight: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: 
-				x: 0
-			end:
-				x: -@width
-		incoming =
-			start:
-				x: @width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	moveInLeft: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start:
-				x: 0
-			end:
-				x: @width
-		incoming =
-			start:
-				x: -@width
-			end:
-				x: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	moveInUp: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: 
-				y: 0
-			end:
-				y: -@height
-		incoming =
-			start:
-				x: 0
-				y: @height
-			end:
-				y: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	moveInDown: (newView, animationOptions = @animationOptions) ->
-		outgoing =
-			start: 
-				y: 0
-			end:
-				y: @height
-		incoming =
-			start:
-				x: 0
-				y: -@height
-			end:
-				y: 0
-		@applyAnimation newView, incoming, animationOptions, outgoing
-
-	magicMove: (newView, animationOptions = @animationOptions) ->
-
-		# restore properties as they were 
-		# before previous animation
-		@current?.propsBeforeAnimation = @current.props
-		newView.props = newView.propsBeforeAnimation
-
-		traverseSubLayers = (layer) ->
-			arr = []
-			findSubLayer = (layer) ->
-				for subLayer in layer.subLayers
-					arr.push subLayer
-					if subLayer.subLayers.length > 0
-						findSubLayer subLayer
-				return arr
-			findSubLayer layer
-		
-		existingLayers = {}
-		for sub in traverseSubLayers @current
-			existingLayers[sub.name] = sub
-
-		# proper switch with history support
-		@addSubLayer newView if @subLayers.indexOf(newView) is -1
-		newView.visible = true
-		newView.point = {x:0, y:0}
-		
-		@saveCurrentToHistory 
-			name: 'magicMove'
-			animationOptions: animationOptions
-		@current = newView
-		@current.bringToFront()
-		
-		# fancy animations with magic move
-		for newLayer in traverseSubLayers newView
-			unless newLayer.originalFrame? then newLayer.originalFrame = newLayer.frame
-			match = existingLayers[newLayer.name]
-			if match?
-				prevFrame = match.frame
-				animationObj = 
-					properties: newLayer.props
-				simulatedProps = match.props
-				delete simulatedProps['image']
-				newLayer.props = simulatedProps
-			else # fade in new layers
-				newLayer.opacity = 0
-				animationObj = 
-					properties:
-						opacity: 1
-			_.extend animationObj, animationOptions
-			newLayer.animate animationObj
-			delete existingLayers[newLayer.name]
-
-		# fade out unused layers
-		for remainingLayer, layer of existingLayers
-			tempCopy = layer.copy()
-			tempCopy.superLayer = newView
-			animationObj = 
-					properties:
-						opacity: 0
-			_.extend animationObj, animationOptions
-			fadeOut = tempCopy.animate animationObj
-			tempCopy.on Events.AnimationEnd, -> @destroy()
-
-
-	# Backwards compatibility with https://github.com/chriscamargo/framer-viewNavigationController
-	transition: (newView, direction = 'right') ->
-		switch direction
-			when 'up' then @moveInDown newView
-			when 'right' then @pushInRight newView
-			when 'down' then @moveInUp newView
-			when 'left' then @pushInLeft newView
+			@currentView = previous.view
+			@history.shift()
+			moveOut.on Events.AnimationEnd, => @currentView.bringToFront()
