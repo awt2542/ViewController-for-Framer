@@ -116,7 +116,7 @@ Example project: [http://share.framerjs.com/qzxwtystb9vb/](http://share.framerjs
 
 ####.backButtonName
 
-Layers matching this name will automatically call .back() on click (defaults to "backButton"). Defaults to "backButton"
+Layers matching this name will automatically call .back() on click. Defaults to "backButton"
 
 ####.scroll (experimental)
 
