@@ -32,7 +32,6 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 
 | Transition        | Demo        
 | ------------- 		|-------------| 
-| .fadeIn()			|![fadeIn](http://cl.ly/3w3X2c080X3q/fadeIn.gif)|
 | .switchInstant() 	|![fadeIn](http://cl.ly/2f0S4026411g/switchInstant.gif)|
 | .slideInUp() 		|![fadeIn](http://cl.ly/0d350p25132M/slideInUp.gif)|
 | .slideInRight() 	|![fadeIn](http://cl.ly/3p3c2d122n1c/slideInRight.gif)|
