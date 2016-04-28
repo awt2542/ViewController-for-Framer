@@ -48,8 +48,8 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 | .zoomOut() 			|![fadeIn](http://cl.ly/2w3d3O0F121g/zoomOut.gif)|
 
 
-
 ### Properties and methods
+
 
 ####.initialView
 
@@ -131,7 +131,6 @@ If you have [autoLink](#autolink) enabled in your ViewController (enabled by def
 1. Select two layers, one button and one view (eg. an artboard)
 2. Run the plugin and choose one of the available transitions
 3. Done! Your button layer has been renamed. Now re-import the changes to Framer
-
 
 
 ### Example prototypes
