@@ -110,6 +110,8 @@ automatically create links based on layer names according to the format: transit
 sketch.home.onClick -> Views.slideInRight(menu)
 ```
 
+To get started, just create a new ViewController and import a Sketch file with properly named layers. autoLink is "true" by default.
+
 See [available transitions](#transitions) and the separate [sketch plugin](#sketch) that helps you with renaming your layers.
 
 Example project: [http://share.framerjs.com/qzxwtystb9vb/](http://share.framerjs.com/qzxwtystb9vb/)
