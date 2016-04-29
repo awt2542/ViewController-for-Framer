@@ -6,7 +6,7 @@ The ViewController module for Framer.js helps you create multi step user flows w
 [Try the demo protoype](http://share.framerjs.com/9a7jker13tm7/)
 
 
-The ViewController module makes it easy to create larger UI flows inside Framer. To get started, download the ViewController.coffee file and put inside your project's modules folder. Then follow these steps:
+The ViewController module makes it easy to create larger UI flows inside Framer. To get started,  [download](https://github.com/awt2542/ViewController-for-Framer/archive/master.zip) the ViewController.coffee file and put inside your project's modules folder. Then follow these steps:
 
 **Step 1** Create a new ViewController
 
@@ -133,6 +133,7 @@ If you have [autoLink](#autolink) enabled in your ViewController (enabled by def
 2. Run the plugin and choose one of the available transitions
 3. Done! Your button layer has been renamed. Now re-import the changes to Framer
 
+Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archive/master.zip](https://github.com/awt2542/ViewController-for-Framer/archive/master.zip)
 
 ### Example prototypes
 
