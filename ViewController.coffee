@@ -48,9 +48,6 @@ class module.exports extends Layer
 				newView:
 					from: {opacity: 0}
 					to: {opacity: 1}
-			fadeOut:
-				oldView:
-					to: {opacity: 0}
 			zoomIn:
 				newView:
 					from: {scale: 0.8, opacity: 0}
