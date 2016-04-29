@@ -70,6 +70,18 @@ class module.exports extends Layer
 				newView:
 					from: {maxY: 0}
 					to: {y: 0}
+			moveInRight:
+				oldView:
+					to: {maxX: 0}
+				newView:
+					from: {x: @width}
+					to: {x: 0}
+			moveInLeft:
+				oldView:
+					to: {x: @width}
+				newView:
+					from: {maxX: 0}
+					to: {x: 0}
 			slideInLeft:
 				newView:
 					from: {maxX: 0}
@@ -145,6 +157,7 @@ class module.exports extends Layer
 				newView.brightness = 100
 
 				# oldView
+				@currentView.point = {x: 0, y: 0} # fixes offset issue when moving too fast between screens
 				@currentView.props = animProps.oldView?.from
 				outgoing = @currentView.animate _.extend animationOptions, {properties: animProps.oldView?.to}
 
@@ -159,6 +172,7 @@ class module.exports extends Layer
 				else
 					newView.placeBefore(@currentView)
 				
+
 				@saveCurrentViewToHistory name, outgoing, incoming
 				@currentView = newView
 				@emit("change:currentView", @currentView, @history[0].view)
