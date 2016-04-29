@@ -74,6 +74,30 @@ class module.exports extends Layer
 				newView:
 					from: {maxX: 0}
 					to: {maxX: @width}
+			pushInRight:
+				oldView:
+					to: {x: -400}
+				newView:
+					from: {x: @width}
+					to: {x: 0}
+			pushInLeft:
+				oldView:
+					to: {x: 400}
+				newView:
+					from: {x: -@width}
+					to: {x: 0}
+			pushOutRight:
+				oldView:
+					to: {x: @width}
+				newView:
+					from: {x: -400}
+					to: {x: 0}
+			pushOutLeft:
+				oldView:
+					to: {maxX: 0}
+				newView:
+					from: {x: 400}
+					to: {x: 0}
 			slideOutUp:
 				oldView:
 					to: {maxY: 0}
@@ -90,6 +114,8 @@ class module.exports extends Layer
 		# shortcuts
 		transitions.slideIn = transitions.slideInRight
 		transitions.slideOut = transitions.slideOutRight
+		transitions.pushIn = transitions.pushInRight
+		transitions.pushOut = transitions.pushOutRight
 
 		_.each transitions, (animProps, name) =>
 
