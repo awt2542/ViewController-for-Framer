@@ -76,13 +76,13 @@ class module.exports extends Layer
 					to: {maxX: @width}
 			pushInRight:
 				oldView:
-					to: {x: -400}
+					to: {x: -(@width/5), brightness: 70}
 				newView:
 					from: {x: @width}
 					to: {x: 0}
 			pushInLeft:
 				oldView:
-					to: {x: 400}
+					to: {x: @width/5, brightness: 70}
 				newView:
 					from: {x: -@width}
 					to: {x: 0}
@@ -90,14 +90,14 @@ class module.exports extends Layer
 				oldView:
 					to: {x: @width}
 				newView:
-					from: {x: -400}
-					to: {x: 0}
+					from: {x: -(@width/5), brightness: 70}
+					to: {x: 0, brightness: 100}
 			pushOutLeft:
 				oldView:
 					to: {maxX: 0}
 				newView:
-					from: {x: 400}
-					to: {x: 0}
+					from: {x: @width/5, brightness: 70}
+					to: {x: 0, brightness: 100}
 			slideOutUp:
 				oldView:
 					to: {maxY: 0}
@@ -142,6 +142,7 @@ class module.exports extends Layer
 				newView.point = {x:0, y: 0}
 				newView.opacity = 1
 				newView.scale = 1
+				newView.brightness = 100
 
 				# oldView
 				@currentView.props = animProps.oldView?.from
