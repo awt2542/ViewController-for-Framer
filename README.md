@@ -41,8 +41,13 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 | .slideOutRight() 	|![fadeIn](http://cl.ly/1W031x3k0025/slideOutRight.gif)|
 | .slideOutDown() 	|![fadeIn](http://cl.ly/2t2m2c1w2W0t/slideOutDown.gif)|
 | .slideOutLeft() 	|![fadeIn](http://cl.ly/1L0u2u0J2P1o/slideOutLeft.gif)|
+| .moveInRight() 	|![fadeIn](http://cl.ly/3W1H3n400E0m/moveInRight.gif)|
+| .moveInLeft() 		|![fadeIn](http://cl.ly/0K0B2A0e1A1U/moveInLeft.gif)|
+| .pushInRight() 	|![fadeIn](http://cl.ly/181l1T08372m/pushInRight.gif)|
+| .pushInLeft() 		|![fadeIn](http://cl.ly/0a003K0e0v1t/pushInLeft.gif)|
+| .pushOutRight() 	|![fadeIn](http://cl.ly/0Z3R1W2s3o1A/pushOutRight.gif)|
+| .pushOutLeft() 	|![fadeIn](http://cl.ly/0n3M0C113B3p/pushOutLeft.gif)|
 | .fadeIn() 			|![fadeIn](http://cl.ly/3w3X2c080X3q/fadeIn.gif)|
-| .fadeOut() 			|![fadeIn](http://cl.ly/1K3Q0F3h1k2Y/fadeOut.gif)|
 | .zoomIn() 			|![fadeIn](http://cl.ly/191u2B3U0X13/zoomIn.gif)|
 | .zoomOut() 			|![fadeIn](http://cl.ly/2w3d3O0F121g/zoomOut.gif)|
 
