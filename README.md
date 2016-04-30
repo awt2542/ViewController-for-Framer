@@ -149,3 +149,5 @@ Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archi
 ###Contact
 
 Twitter: [@andreaswah](http://twitter.com/andreaswah)
+
+Thanks to Invision for the excellent UI kit used in the examples: [Do UI kit](https://www.invisionapp.com/do)
