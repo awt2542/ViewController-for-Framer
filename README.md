@@ -86,6 +86,29 @@ Views.slideIn(sketch.menu)
 print Views.currentView # returns sketch.menu
 ```
 
+####.previousView
+
+Returns the previous view
+
+```coffeescript
+Views = new ViewController
+	initialView: sketch.home
+Views.slideIn(sketch.menu)
+print Views.previousView # returns sketch.home
+```
+
+####.history
+
+Returns the full history of the ViewController in an array
+
+```coffeescript
+Views = new ViewController
+	initialView: sketch.home
+Views.slideIn(sketch.menu)
+Views.slideIn(sketch.profile)
+print Views.history
+```
+
 ####.back()
 
 Go back one step in history and reverse the animation.

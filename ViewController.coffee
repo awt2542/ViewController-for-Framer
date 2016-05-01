@@ -186,6 +186,9 @@ class module.exports extends Layer
 			for btn in backButtons
 				btn.onClick => @back()
 
+	@define "previousView",
+			get: -> @history[0].view
+
 	saveCurrentViewToHistory: (name,outgoingAnimation,incomingAnimation) ->
 		@history.unshift
 			view: @currentView
