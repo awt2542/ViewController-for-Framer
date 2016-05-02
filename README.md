@@ -17,12 +17,9 @@ Views = new ViewController
 	initialView: sketch.home
 ```
 
-**Step 2** Call one of the [supported transitions](#transitions) to switch view
+**Step 2** Call one of the [supported transitions](#transitions) to switch view or use the [Sketch plugin](#sketch) to generate links.
 
 ```coffeescript
-ViewController = require 'ViewController'
-Views = new ViewController
-	initialView: sketch.home
 sketch.home.onClick -> Views.slideInLeft(sketch.menu)
 ```
 
@@ -133,7 +130,7 @@ Views = new ViewController
 
 #### <a name="autolink"> </a> .autoLink
 
-automatically create links based on layer names according to the format: transitionName\_viewName. For example, renaming the "home" layer inside Sketch to slideInRight\_menu would be equivalent to the following code: 
+automatically create onClick-links based on layer names according to the format: transitionName\_viewName. For example, renaming the "home" layer inside Sketch to slideInRight\_menu would be equivalent to the following code: 
 
 ```coffeescript
 sketch.home.onClick -> Views.slideInRight(menu)
