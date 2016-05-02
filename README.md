@@ -23,8 +23,6 @@ Views = new ViewController
 sketch.home.onClick -> Views.slideInLeft(sketch.menu)
 ```
 
-You can also set up links in directly Sketch using the [autoLink](#autolink) feature.
-
 ### <a name="transitions"> </a>Available transitions
 
 Transitions are trigged by using one of the transition methods. Eg. `Views.fadeIn(anotherLayer)`. Each transition accepts an animationOption object as the second argument. Eg. `Views.fadeIn(anotherLayer, time: 2)`
