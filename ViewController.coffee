@@ -13,7 +13,6 @@ class module.exports extends Layer
 
 		super options
 		@history = []
-		@currentView = @ # hack to make transitions work when currentView doesn't exist. fix todo.
 
 		@onChange "subLayers", (changeList) =>
 			view = changeList.added[0]
@@ -154,9 +153,9 @@ class module.exports extends Layer
 				newView.brightness = 100
 
 				# oldView
-				@currentView.point = {x: 0, y: 0} # fixes offset issue when moving too fast between screens
-				@currentView.props = animProps.oldView?.from
-				outgoing = @currentView.animate _.extend animationOptions, {properties: animProps.oldView?.to}
+				@currentView?.point = {x: 0, y: 0} # fixes offset issue when moving too fast between screens
+				@currentView?.props = animProps.oldView?.from
+				outgoing = @currentView?.animate _.extend animationOptions, {properties: animProps.oldView?.to}
 
 				# newView
 				newView.props = animProps.newView?.from
