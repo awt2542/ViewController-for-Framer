@@ -1,7 +1,5 @@
 ## ViewController-for-Framer
-The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in", "zoom in" and "slide in". It consists of a Framer module and an optional [Sketch plugin](#sketch). 
-
-Read the intro article on [Medium](https://medium.com/@andreaswah/create-ui-flows-using-sketch-and-framer-36b6552306b5#.dp4w6i676).
+The ViewController module for Framer.js helps you create multi step user flows with pre-made transitions like "fade in", "zoom in" and "slide in". It consists of a Framer module and an optional [Sketch plugin](#sketch). Read the intro article on [Medium](https://medium.com/@andreaswah/create-ui-flows-using-sketch-and-framer-36b6552306b5#.dp4w6i676)
 
 ![framerdemo](http://cl.ly/0a1y073v3A0L/2016-04-30%2009_59_07.gif)
 
@@ -212,4 +210,4 @@ Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archi
 
 Twitter: [@andreaswah](http://twitter.com/andreaswah)
 
-Thanks to Invision for the excellent UI kit used in the examples: [Do UI kit](https://www.invisionapp.com/do)
+Thanks to Chris for the [original inspiration](https://github.com/chriscamargo/framer-viewNavigationController) for this module and to Stephen, Jordan, Jason, Koen, Fran & Marc for early feedback. Also thanks to Invision for the excellent UI kit used in the examples: [Do UI kit](https://www.invisionapp.com/do)
