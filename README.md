@@ -150,6 +150,45 @@ Layers matching this name will automatically call .back() on click. Defaults to 
 
 Automatically adds scroll components to each view. If a view is larger than the ViewController, it will automatically enable scrollHorizontal and/or scrollVertical. Defaults to "false".
 
+### Events
+
+
+####change:currentView
+
+Triggered when the currentView changes
+
+```coffeescript
+Views.onChange "currentView", (current) -> 
+	print "new view is: "+current.name
+```
+
+####change:previousView
+
+Triggered when the previousView changes
+
+```coffeescript
+Views.onChange "previousView", (previous) -> 
+	print "previous view is: "+previous.name
+```
+
+####ViewWillSwitch
+
+Triggered before a transition starts
+
+```coffeescript
+Views.onViewWillSwitch (oldView, newView) ->
+	print oldView,newView
+```
+
+####ViewDidSwitch
+
+Triggered after a transition has finished
+
+```coffeescript
+Views.onViewDidSwitch (oldView, newView) ->
+	print oldView,newView
+```
+
 ### <a name="sketch"> </a> Sketch plugin
 
 ![sketchPlugin](http://cl.ly/0y0s0M451Q2K/ScreenFlowDemo.gif)

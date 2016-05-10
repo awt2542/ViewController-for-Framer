@@ -125,6 +125,12 @@ class module.exports extends Layer
 		transitions.pushIn = transitions.pushInRight
 		transitions.pushOut = transitions.pushOutRight
 
+		# events
+		Events.ViewWillSwitch = "viewWillSwitch"
+		Events.ViewDidSwitch = "viewDidSwitch"
+		Layer::onViewWillSwitch = (cb) -> @on(Events.ViewWillSwitch, cb)
+		Layer::onViewDidSwitch = (cb) -> @on(Events.ViewDidSwitch, cb)		
+
 		_.each transitions, (animProps, name) =>
 
 			if options.autoLink
@@ -167,11 +173,19 @@ class module.exports extends Layer
 					outgoing.on Events.AnimationEnd, => @currentView.bringToFront()
 				else
 					newView.placeBefore(@currentView)
+					
+				@emit(Events.ViewWillSwitch, @currentView, newView)
 				
-
+				# change CurrentView before animation has finished so one could go back in history
+				# without having to wait for the transition to finish
 				@saveCurrentViewToHistory name, outgoing, incoming
 				@currentView = newView
-				@emit("change:currentView", @currentView, @history[0].view)
+				@emit("change:previousView", @previousView)
+				@emit("change:currentView", @currentView)
+				
+				incoming.on Events.AnimationEnd, => 
+					@emit(Events.ViewDidSwitch, @previousView, @currentView)
+				
 
 		if options.initialViewName?
 			autoInitial = _.find Framer.CurrentContext.getLayers(), (l) -> l.name is options.initialViewName
