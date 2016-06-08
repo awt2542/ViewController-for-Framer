@@ -183,7 +183,11 @@ class module.exports extends Layer
 				@emit("change:previousView", @previousView)
 				@emit("change:currentView", @currentView)
 				
-				incoming.on Events.AnimationEnd, => 
+				if incoming.isAnimating
+					hook = incoming 
+				else
+					hook = outgoing
+				hook.on Events.AnimationEnd, =>
 					@emit(Events.ViewDidSwitch, @previousView, @currentView)
 				
 
