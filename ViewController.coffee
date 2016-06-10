@@ -136,7 +136,7 @@ class module.exports extends Layer
 			if options.autoLink
 				layers = Framer.CurrentContext.getLayers()
 				for btn in layers
-					if _.contains btn.name, name
+					if _.includes btn.name, name
 						viewController = @
 						btn.onClick ->
 							anim = @name.split('_')[0]
@@ -168,7 +168,7 @@ class module.exports extends Layer
 				incoming = newView.animate _.extend animationOptions, {properties: animProps.newView?.to}
 				
 				# layer order
-				if _.contains name, 'Out'
+				if _.includes name, 'Out'
 					newView.placeBehind(@currentView)
 					outgoing.on Events.AnimationEnd, => @currentView.bringToFront()
 				else
@@ -199,7 +199,7 @@ class module.exports extends Layer
 			@switchInstant options.initialView
 
 		if options.backButtonName?
-			backButtons = _.filter Framer.CurrentContext.getLayers(), (l) -> _.contains l.name, options.backButtonName
+			backButtons = _.filter Framer.CurrentContext.getLayers(), (l) -> _.includes l.name, options.backButtonName
 			for btn in backButtons
 				btn.onClick => @back()
 
@@ -217,7 +217,7 @@ class module.exports extends Layer
 		previous = @history[0]
 		if previous.view?
 
-			if _.contains previous.animationName, 'Out'
+			if _.includes previous.animationName, 'Out'
 				previous.view.bringToFront()
 
 			backIn = previous.outgoingAnimation.reverse()
