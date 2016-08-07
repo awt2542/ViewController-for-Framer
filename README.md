@@ -3,7 +3,7 @@ The ViewController module for Framer.js helps you create multi step user flows w
 
 ![framerdemo](http://cl.ly/0a1y073v3A0L/2016-04-30%2009_59_07.gif)
 
-[Try the demo protoype](http://share.framerjs.com/9a7jker13tm7/)
+[Try the demo protoype](http://share.framerjs.com/un1di17cqs6u/)
 
 ### <a name="gettingstarted"> </a>Getting started
 
@@ -138,7 +138,7 @@ To get started, just create a new ViewController and import a Sketch file with p
 
 See [available transitions](#transitions) and the separate [sketch plugin](#sketch) that helps you with renaming your layers.
 
-Example project: [http://share.framerjs.com/qzxwtystb9vb/](http://share.framerjs.com/qzxwtystb9vb/)
+Example project: [http://share.framerjs.com/owauo3t6i7al/](http://share.framerjs.com/owauo3t6i7al/)
 
 ####.backButtonName
 
@@ -202,8 +202,8 @@ Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archi
 
 ### Example prototypes
 
-- [Basic example](http://share.framerjs.com/9a7jker13tm7/)
-- [autoLink example](http://share.framerjs.com/qzxwtystb9vb/)
+- [Basic example](http://share.framerjs.com/un1di17cqs6u/)
+- [autoLink example](http://share.framerjs.com/owauo3t6i7al/)
 
 
 ###Contact
