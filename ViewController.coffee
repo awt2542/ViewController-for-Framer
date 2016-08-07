@@ -6,7 +6,7 @@ class module.exports extends Layer
 		options.clip ?= true
 		options.initialViewName ?= 'initialView'
 		options.backButtonName ?= 'backButton'
-		options.animationOptions ?= curve: "cubic-bezier(0.19, 1, 0.22, 1)", time: .7
+		options.animationOptions ?= { curve: "cubic-bezier(0.19, 1, 0.22, 1)", time: .7 }
 		options.backgroundColor ?= "black"
 		options.scroll ?= false
 		options.autoLink ?= true
@@ -148,6 +148,8 @@ class module.exports extends Layer
 
 				return if newView is @currentView
 
+
+
 				# make sure the new layer is inside the viewcontroller
 				newView.parent = @
 				newView.sendToBack()
@@ -157,15 +159,17 @@ class module.exports extends Layer
 				newView.opacity = 1
 				newView.scale = 1
 				newView.brightness = 100
-
+				
 				# oldView
 				@currentView?.point = {x: 0, y: 0} # fixes offset issue when moving too fast between screens
 				@currentView?.props = animProps.oldView?.from
-				outgoing = @currentView?.animate _.extend animationOptions, {properties: animProps.oldView?.to}
+				animObj = _.extend {properties: animProps.oldView?.to}, animationOptions
+				_.defaults(animObj, { properties: {} })
+				outgoing = @currentView?.animate animObj
 
 				# newView
 				newView.props = animProps.newView?.from
-				incoming = newView.animate _.extend animationOptions, {properties: animProps.newView?.to}
+				incoming = newView.animate _.extend {properties: animProps.newView?.to}, animationOptions
 				
 				# layer order
 				if _.includes name, 'Out'
