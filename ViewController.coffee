@@ -54,6 +54,8 @@ class module.exports extends Layer
 			zoomOut:
 				oldView:
 					to: {scale: 0.8, opacity: 0}
+				newView:
+					to: {}
 			slideInUp:
 				newView:
 					from: {y: @height}
@@ -109,15 +111,23 @@ class module.exports extends Layer
 			slideOutUp:
 				oldView:
 					to: {maxY: 0}
+				newView:
+					to: {}
 			slideOutRight:
 				oldView:
 					to: {x: @width}
+				newView:
+					to: {}
 			slideOutDown:
 				oldView:
 					to: {y: @height}
+				newView:
+					to: {}
 			slideOutLeft:
 				oldView:
 					to: {maxX: 0}
+				newView:
+					to: {}
 
 		# shortcuts
 		transitions.slideIn = transitions.slideInRight
