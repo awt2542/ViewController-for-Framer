@@ -40,9 +40,7 @@ class module.exports extends Layer
 					view.size = {width: @width, height: @height}
 
 		transitions =
-			switchInstant:
-				newView:
-					to: {x: 0, y: 0}
+			switchInstant: {}
 			fadeIn:
 				newView:
 					from: {opacity: 0}
@@ -144,7 +142,7 @@ class module.exports extends Layer
 		_.each transitions, (animProps, name) =>
 
 			if options.autoLink
-				layers = Framer.CurrentContext.getLayers()
+				layers = Framer.CurrentContext._layers
 				for btn in layers
 					if _.includes btn.name, name
 						viewController = @
@@ -201,19 +199,19 @@ class module.exports extends Layer
 					hook = incoming 
 				else
 					hook = outgoing
-				hook.on Events.AnimationEnd, =>
+				hook?.on Events.AnimationEnd, =>
 					@emit(Events.ViewDidSwitch, @previousView, @currentView)
 				
 
 		if options.initialViewName?
-			autoInitial = _.find Framer.CurrentContext.getLayers(), (l) -> l.name is options.initialViewName
+			autoInitial = _.find Framer.CurrentContext._layers, (l) -> l.name is options.initialViewName
 			if autoInitial? then @switchInstant autoInitial
 
 		if options.initialView?
 			@switchInstant options.initialView
 
 		if options.backButtonName?
-			backButtons = _.filter Framer.CurrentContext.getLayers(), (l) -> _.includes l.name, options.backButtonName
+			backButtons = _.filter Framer.CurrentContext._layers, (l) -> _.includes l.name, options.backButtonName
 			for btn in backButtons
 				btn.onClick => @back()
 
