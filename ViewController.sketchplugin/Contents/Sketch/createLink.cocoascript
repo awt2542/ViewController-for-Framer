@@ -9,8 +9,6 @@ var onRun = function(context) {
       
       var button = first
       var view = second
-      log("button"+button)
-      log("view"+view)
       
       var alert = NSAlert.alloc().init()
       alert.setMessageText('Choose a transition')
@@ -25,10 +23,45 @@ var onRun = function(context) {
       var sel = accessory.indexOfSelectedItem()
 
       if (responseCode == 1000){
-        context.document.showMessage("ViewController: Renamed 1 layer")
+        context.document.showMessage("ViewController: Renamed 1 layer. Open Framer to import the changes")
         button.setName(keywords[sel]+"_"+view.name());
       } else if (responseCode == 1002) {
         createSelect(view,button,sel)
+      }
+      
+    }
+
+    function selectArtboard(first){
+      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Zoom out  👀','Slide in up ⬆️','Slide in right ⬅️','Slide in down ⬇️','Slide in left ➡️','Slide out up ⬆️','Slide out right ➡️','Slide out down ⬇️','Slide out left ⬅️','Push in right ⏪','Push in left ⏩','Push out right ⏩','Push out left ⏪','Move in right ⏮','Move in left ⏭']
+      var artboards = context.document.currentPage().artboards()
+      var artboardNames = []
+      if (artboards.count() == 0){
+        context.document.showMessage("ViewController: You need at least one artboard before creating a link")
+      }
+      for(var i=0; i < artboards.count(); i++){
+        artboardNames.push(artboards[i].name())
+      }
+
+      var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
+      accessory.addItemsWithObjectValues(artboardNames)
+      accessory.selectItemAtIndex(0) // pre-select first item
+      
+      var button = first
+      
+      var alert = NSAlert.alloc().init()
+
+      alert.setMessageText('Choose an artboard')
+      alert.setInformativeText('Where should '+button.name()+' link to?')
+      
+      alert.addButtonWithTitle('Select Artboard') // 1000
+      alert.addButtonWithTitle('Cancel') // 1001
+      alert.setAccessoryView(accessory)
+
+      var responseCode = alert.runModal()
+      var sel = accessory.indexOfSelectedItem()
+
+      if (responseCode == 1000){
+        createSelect(button,artboards[sel],0)
       }
       
     }
@@ -41,7 +74,10 @@ var onRun = function(context) {
     } else {
       createSelect(second,one,0)
     }
+  } else if (context.selection.count() == 1) {
+    var button = context.selection[0];
+    selectArtboard(button);
   } else {
-    context.document.showMessage("ViewController: Select exactly 2 layers before creating a link")
+    context.document.showMessage("ViewController: You need to select at least one layer")
   }
 };
