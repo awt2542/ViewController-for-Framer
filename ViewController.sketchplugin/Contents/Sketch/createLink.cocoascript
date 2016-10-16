@@ -32,11 +32,10 @@ var onRun = function(context) {
     }
 
     function selectArtboard(first){
-      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Zoom out  👀','Slide in up ⬆️','Slide in right ⬅️','Slide in down ⬇️','Slide in left ➡️','Slide out up ⬆️','Slide out right ➡️','Slide out down ⬇️','Slide out left ⬅️','Push in right ⏪','Push in left ⏩','Push out right ⏩','Push out left ⏪','Move in right ⏮','Move in left ⏭']
       var artboards = context.document.currentPage().artboards()
       var artboardNames = []
       if (artboards.count() == 0){
-        context.document.showMessage("ViewController: You need at least one artboard before creating a link")
+        context.document.showMessage("ViewController: Add an artboard to your document before trying to create a link")
       }
       for(var i=0; i < artboards.count(); i++){
         artboardNames.push(artboards[i].name())
