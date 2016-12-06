@@ -1,8 +1,8 @@
 var onRun = function(context) {
     
     function createSelect(first,second,selectIndex){
-      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Zoom out  👀','Slide in up ⬆️','Slide in right ⬅️','Slide in down ⬇️','Slide in left ➡️','Slide out up ⬆️','Slide out right ➡️','Slide out down ⬇️','Slide out left ⬅️','Push in right ⏪','Push in left ⏩','Push out right ⏩','Push out left ⏪','Move in right ⏮','Move in left ⏭']
-      var keywords = ['switchInstant','fadeIn','zoomIn','zoomOut','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft','pushInRight','pushInLeft','pushOutRight','pushOutLeft','moveInRight','moveInLeft']
+      var options = ['Switch instant ⚡️','Fade in 👻','Zoom in  👀','Zoom out  👀','Slide in up ⬆️','Slide in right ⬅️','Slide in down ⬇️','Slide in left ➡️','Slide out up ⬆️','Slide out right ➡️','Slide out down ⬇️','Slide out left ⬅️','Push in right ⏪','Push in left ⏩','Push out right ⏩','Push out left ⏪','Move in up ⏫','Move in right ⏪','Move in down ⏬','Move in left ⏩']
+      var keywords = ['switchInstant','fadeIn','zoomIn','zoomOut','slideInUp','slideInRight','slideInDown','slideInLeft','slideOutUp','slideOutRight','slideOutDown','slideOutLeft','pushInRight','pushInLeft','pushOutRight','pushOutLeft','moveInUp','moveInRight','moveInDown','moveInLeft']
       var accessory = NSComboBox.alloc().initWithFrame(NSMakeRect(0,0,200,25))
       accessory.addItemsWithObjectValues(options)
       accessory.selectItemAtIndex(selectIndex) // pre-select first item

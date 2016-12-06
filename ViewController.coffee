@@ -66,22 +66,34 @@ class module.exports extends Layer
 				newView:
 					from: {maxY: 0}
 					to: {y: 0}
+			slideInLeft:
+				newView:
+					from: {maxX: 0}
+					to: {maxX: @width}
+			moveInUp:
+				oldView:
+					to: {y: -@height}
+				newView:
+					from: {y: @height}
+					to: {y: 0}
 			moveInRight:
 				oldView:
 					to: {maxX: 0}
 				newView:
 					from: {x: @width}
 					to: {x: 0}
+			moveInDown:
+				oldView:
+					to: {y: @height}
+				newView:
+					from: {y: -@height}
+					to: {y: 0}
 			moveInLeft:
 				oldView:
 					to: {x: @width}
 				newView:
 					from: {maxX: 0}
 					to: {x: 0}
-			slideInLeft:
-				newView:
-					from: {maxX: 0}
-					to: {maxX: @width}
 			pushInRight:
 				oldView:
 					to: {x: -(@width/5), brightness: 70}
