@@ -40,6 +40,8 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 | .slideOutLeft() 	|![fadeIn](http://cl.ly/1L0u2u0J2P1o/slideOutLeft.gif)|
 | .moveInRight() 	|![fadeIn](http://cl.ly/3W1H3n400E0m/moveInRight.gif)|
 | .moveInLeft() 		|![fadeIn](http://cl.ly/0K0B2A0e1A1U/moveInLeft.gif)|
+| .moveInUp() 	||
+| .moveInDown() 	||
 | .pushInRight() 	|![fadeIn](http://cl.ly/181l1T08372m/pushInRight.gif)|
 | .pushInLeft() 		|![fadeIn](http://cl.ly/0a003K0e0v1t/pushInLeft.gif)|
 | .pushOutRight() 	|![fadeIn](http://cl.ly/0Z3R1W2s3o1A/pushOutRight.gif)|
