@@ -54,7 +54,7 @@ Transitions are trigged by using one of the transition methods. Eg. `Views.fadeI
 ### Properties and methods
 
 
-####.initialView
+#### .initialView
 
 Set the initial view
 
@@ -63,7 +63,7 @@ Views = new ViewController
 	initialView: sketch.home
 ```
 
-####.initialViewName
+#### .initialViewName
 
 Set the initial view based on a layer name. In the following example, the layer named "initialView" will automatically be set as the initialView. 
 
@@ -72,7 +72,7 @@ Views = new ViewController
 	initialViewName: "initialView" # default value
 ```
 
-####.currentView
+#### .currentView
 
 Returns the current view
 
@@ -83,7 +83,7 @@ Views.slideIn(sketch.menu)
 print Views.currentView # returns sketch.menu
 ```
 
-####.previousView
+#### .previousView
 
 Returns the previous view
 
@@ -94,7 +94,7 @@ Views.slideIn(sketch.menu)
 print Views.previousView # returns sketch.home
 ```
 
-####.history
+#### .history
 
 Returns the full history of the ViewController in an array
 
@@ -106,7 +106,7 @@ Views.slideIn(sketch.profile)
 print Views.history
 ```
 
-####.back()
+#### .back()
 
 Go back one step in history and reverse the animation.
 
@@ -117,7 +117,7 @@ Views.slideIn(sketch.menu)
 sketch.btn.onClick -> Views.back() # animates back to sketch.home
 ```
 
-####.animationOptions
+#### .animationOptions
 
 Default animation options for all transitions inside the ViewController.
 
@@ -142,18 +142,18 @@ See [available transitions](#transitions) and the separate [sketch plugin](#sket
 
 Example project: [http://share.framerjs.com/owauo3t6i7al/](http://share.framerjs.com/owauo3t6i7al/)
 
-####.backButtonName
+#### .backButtonName
 
 Layers matching this name will automatically call .back() on click. Defaults to "backButton"
 
-####.scroll (experimental)
+#### .scroll (experimental)
 
 Automatically adds scroll components to each view. If a view is larger than the ViewController, it will automatically enable scrollHorizontal and/or scrollVertical. Defaults to "false".
 
 ### Events
 
 
-####change:currentView
+#### change:currentView
 
 Triggered when the currentView changes
 
@@ -162,7 +162,7 @@ Views.onChange "currentView", (current) ->
 	print "new view is: "+current.name
 ```
 
-####change:previousView
+#### change:previousView
 
 Triggered when the previousView changes
 
@@ -171,7 +171,7 @@ Views.onChange "previousView", (previous) ->
 	print "previous view is: "+previous.name
 ```
 
-####ViewWillSwitch
+#### ViewWillSwitch
 
 Triggered before a transition starts
 
@@ -180,7 +180,7 @@ Views.onViewWillSwitch (oldView, newView) ->
 	print oldView,newView
 ```
 
-####ViewDidSwitch
+#### ViewDidSwitch
 
 Triggered after a transition has finished
 
@@ -208,7 +208,7 @@ Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archi
 - [autoLink example](http://share.framerjs.com/owauo3t6i7al/)
 
 
-###Contact
+### Contact
 
 Twitter: [@andreaswah](http://twitter.com/andreaswah)
 
