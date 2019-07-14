@@ -208,8 +208,4 @@ Get the plugin here: [https://github.com/awt2542/ViewController-for-Framer/archi
 - [autoLink example](http://share.framerjs.com/owauo3t6i7al/)
 
 
-### Contact
-
-Twitter: [@andreaswah](http://twitter.com/andreaswah)
-
 Thanks to Chris for the [original inspiration](https://github.com/chriscamargo/framer-viewNavigationController) for this module and to Stephen, Jordan, Jason, Koen, Fran & Marc for early feedback. Also thanks to Invision for the excellent UI kit used in the examples: [Do UI kit](https://www.invisionapp.com/do)
